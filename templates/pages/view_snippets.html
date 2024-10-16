@@ -29,7 +29,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Язык</th>
-                        <th scope="col">Дата создания</th>
+                        <th scope="col" colspan="2">Дата создания</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,7 +40,14 @@
                         <td><a href="{% url 'snippet-detail' snippet.id %}">{{ snippet.name }}</a></td>
                         <td> {{ snippet.lang }}</td>
                         <td> {{ snippet.creation_date | date:"d-F-Y H:i:s" }}</td>
+                        <td>
+                            <form action="{% url 'edit-snippet' snippet.id%}" method="POST">
+                                {% csrf_token%}
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
                     </tr>
+
                     {% endfor %}
                     </tbody>
                 </table>

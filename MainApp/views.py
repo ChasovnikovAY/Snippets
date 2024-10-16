@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
@@ -41,14 +41,20 @@ def snippet_detail(request, snippet_id):
         context["snippet"] = snippet
         return render(request, 'pages/snippet_detail.html', context)
 
-def delete_snippet(requset, snippet_id):
+def delete_snippet(request, snippet_id):
     snippet = Snippet.objects.get(id=snippet_id)
     snippet.delete()
-    return redirect('/')
-# def create_snippet(request):
-#    if request.method == "POST":
-#        form = SnippetForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#            return redirect("snipp_list")
-#        return render(request,'pages/add_snippet.html',{'form': form})
+    return redirect('snipp_list')
+
+def edit_snippet(request, snippet_id):
+    context = {'pagename': 'Редактирование снипета'}
+    snippet = Snippet.objects.get(id=snippet_id)
+    if request.method == "GET":
+        form = SnippetForm(instance=snippet)
+        return render(request, "pages/add_snippet.html", context | {"form":form})
+    if request.method == "POST":
+        data_form = request.POST
+        snippet.name = data_form["name"]
+        snippet.code = data_form["code"]
+        snippet.save()
+        return redirect("snipp_list")
