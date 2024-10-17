@@ -40,11 +40,20 @@
                         <td><a href="{% url 'snippet-detail' snippet.id %}">{{ snippet.name }}</a></td>
                         <td> {{ snippet.lang }}</td>
                         <td> {{ snippet.creation_date | date:"d-F-Y H:i:s" }}</td>
+                        {% if request.user.is_authenticated and request.user.id == snippet.user.id %}
+                            <td>
+                                {% if request.user.id == snippet.user.id %}
+                                    <form action="{% url 'edit-snippet' snippet.id %}" method="GET">
+                                        {% csrf_token %}
+                                        <button type="submit">Edit</button>
+                                    </form>
+                                {% else %}
+                                    &nbsp
+                                {% endif %}
+                            </td>
+                        {% endif %}
                         <td>
-                            <form action="{% url 'edit-snippet' snippet.id%}" method="POST">
-                                {% csrf_token%}
-                                <button type="submit">Edit</button>
-                            </form>
+                            {{ snippet.user.username}}
                         </td>
                     </tr>
 
