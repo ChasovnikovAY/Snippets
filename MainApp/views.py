@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from django.core.exceptions import ObjectDoesNotExist
-from MainApp.forms import SnippetForm
+from MainApp.forms import SnippetForm, UserRegistrationForm
 
 
 def index_page(request):
@@ -35,7 +35,7 @@ def snippets_page(request, filter_type):
     # type = 2 - Мои
     snippets = Snippet.objects.all()
     if request.user.is_authenticated:
-        if filter_type == 2:
+        if filter_type == "my":
             # Фильтруем Мои сниппеты
             snippets = snippets.filter(user=request.user.id)
     else:
@@ -59,7 +59,7 @@ def snippet_detail(request, snippet_id):
 def delete_snippet(request, snippet_id):
     snippet = Snippet.objects.get(id=snippet_id)
     snippet.delete()
-    return redirect('snipp_list')
+    return redirect('snipp_list', "my" if request.user.is_authenticated else "all")
 
 def edit_snippet(request, snippet_id):
     context = {'pagename': 'Редактирование снипета'}
@@ -72,7 +72,7 @@ def edit_snippet(request, snippet_id):
         snippet.name = data_form["name"]
         snippet.code = data_form["code"]
         snippet.save()
-        return redirect("snipp_list")
+        return redirect("snipp_list", "my" if request.user.is_authenticated else "all")
 
 def login(request):
     if request.method == 'POST':
@@ -93,5 +93,15 @@ def logout(request):
     auth.logout(request)
     return redirect("home")
 
-def my_snippets(request):
-    pass
+def create_user(request):
+    if request.method == "GET":
+        print("Get")
+        form = UserRegistrationForm()
+    if request.method == "POST":
+        print("Post")
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form }
+    return render(request, 'pages/registration.html', context)
