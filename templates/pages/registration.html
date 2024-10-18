@@ -6,14 +6,8 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <form method="post" action="{% url 'register' %}">{% csrf_token %}
-                <input name="username"  type="text" placeholder="username"><br>
-                <input name="email"  type="text" placeholder="email"><br>
-                <input name="password"  type="password" placeholder="password"><br>
-                <input name="password2"  type="password" placeholder="Confirm password"><br>
-                <button type="submit">login</button>
-            </form>
-            </div>
+            {{ form.as_p }}
         </div>
+    </div>
 </div>
 {% endblock %}

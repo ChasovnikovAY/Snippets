@@ -29,7 +29,9 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Язык</th>
-                        <th scope="col" colspan="2">Дата создания</th>
+                        <th scope="col">Дата создания</th>
+                        <th scope="col">Действия</th>
+                        <th scope="col">Пользователь</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,10 +45,10 @@
                         {% if request.user.is_authenticated and request.user.id == snippet.user.id %}
                             <td>
                                 {% if request.user.id == snippet.user.id %}
-                                    <form action="{% url 'edit-snippet' snippet.id %}" method="GET">
-                                        {% csrf_token %}
+                                    <form action="{% url 'edit-snippet' snippet.id %}" method="GET">{% csrf_token %}
                                         <button type="submit">Edit</button>
                                     </form>
+                                    <a href="{% url 'delete-snippet' snippet.id %}">Удалить Snippet</a>
                                 {% else %}
                                     &nbsp
                                 {% endif %}

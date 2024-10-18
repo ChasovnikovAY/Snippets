@@ -18,13 +18,13 @@
                         </a>
                     </li>
                     <li class="form-inline">
-                        <a class="btn btn-outline-info" href="{% url 'snipp_list' filter_type='all' %}">
+                        <a class="btn btn-outline-info" href="{% url 'snipp_list' %}">
                             Посмотреть сниппеты
                         </a>
                     </li>
                     {% if request.user.is_authenticated %}
                         <li class="form-inline">
-                            <a class="btn btn-outline-info" href="{% url 'snipp_list' filter_type='my' %}">
+                            <a class="btn btn-outline-info" href="{% url 'my_snippet' %}">
                                 Мои сниппеты
                             </a>
                         </li>
