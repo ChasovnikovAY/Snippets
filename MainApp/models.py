@@ -16,6 +16,9 @@ class Snippet(models.Model):
     is_public = models.BooleanField(default=True)
     objects: Manager
 
+    def __str__(self):
+        return self.name
+
 class Comment(models.Model):
     text = models.TextField(max_length=1000)
     creation_date = models.DateTimeField
